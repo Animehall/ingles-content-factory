@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Sparkles, CalendarDays, History, Download, ChevronLeft, ChevronRight } from 'lucide-react'
+import { exportPostAsZip } from './exportCarousel'
 
 const demo = [
   { en: "I'm almost there.", pt: 'Estou quase chegando.', pro: 'áim ólmoust dér' },
@@ -18,6 +19,7 @@ export default function App() {
   const [generatedPosts, setGeneratedPosts] = useState([])
   const [activePost, setActivePost] = useState(0)
   const [loading, setLoading] = useState(false)
+  const [exporting, setExporting] = useState(false)
   const [error, setError] = useState('')
   const [warning, setWarning] = useState('')
   const [meta, setMeta] = useState(null)
@@ -55,6 +57,22 @@ export default function App() {
     }
   }
 
+  async function exportCurrentPost() {
+    setExporting(true)
+    setError('')
+    try {
+      await exportPostAsZip({
+        post: current,
+        postNumber: activePost + 1,
+        topic
+      })
+    } catch (err) {
+      setError(err.message || 'Não foi possível exportar o carrossel.')
+    } finally {
+      setExporting(false)
+    }
+  }
+
   function previousPost() {
     setActivePost(i => Math.max(0, i - 1))
   }
@@ -78,7 +96,7 @@ export default function App() {
     <main>
       <div className="eyebrow">INGLÊS SEM MEDO • MOTOR LOCAL GRÁTIS</div>
       <h1>Gerar semana de conteúdo</h1>
-      <p className="lead">Crie frases, pronúncia, CTA e legenda para TikTok sem API paga e sem custo por geração.</p>
+      <p className="lead">Crie frases, pronúncia, CTA, legenda e slides prontos para TikTok sem API paga.</p>
 
       <section className="panel form-grid">
         <label>Tema
@@ -110,7 +128,9 @@ export default function App() {
               <span>{activePost + 1} / {generatedPosts.length}</span>
               <button className="ghost icon" onClick={nextPost} disabled={activePost === generatedPosts.length - 1}><ChevronRight size={18}/></button>
             </div>}
-            <button className="ghost"><Download size={18}/> Exportar</button>
+            <button className="ghost" onClick={exportCurrentPost} disabled={exporting}>
+              <Download size={18}/> {exporting ? 'Exportando...' : 'Exportar PNG'}
+            </button>
           </div>
         </div>
 
@@ -120,6 +140,7 @@ export default function App() {
         </article>)}</div>
         <div className="cta"><b>CTA do carrossel</b><span>{current.cta || defaultCta}</span></div>
         <div className="caption"><b>Legenda TikTok</b><span>{current.caption || defaultCaption}</span></div>
+        <div className="export-note">A exportação gera um ZIP com capa + 4 slides PNG em 1080×1350, além de legenda.txt e cta.txt.</div>
       </section>
     </main>
   </div>
