@@ -76,9 +76,9 @@ export default function App() {
     </aside>
 
     <main>
-      <div className="eyebrow">INGLÊS SEM MEDO</div>
+      <div className="eyebrow">INGLÊS SEM MEDO • MOTOR LOCAL GRÁTIS</div>
       <h1>Gerar semana de conteúdo</h1>
-      <p className="lead">Crie frases, pronúncia, CTA e legenda prontos para TikTok em poucos cliques.</p>
+      <p className="lead">Crie frases, pronúncia, CTA e legenda para TikTok sem API paga e sem custo por geração.</p>
 
       <section className="panel form-grid">
         <label>Tema
@@ -88,11 +88,11 @@ export default function App() {
         </label>
         <label>Quantidade de posts
           <select value={count} onChange={e=>setCount(Number(e.target.value))}>
-            {[1,3,5,7,14,30].map(x=><option key={x} value={x}>{x}</option>)}
+            {[1,3,5,7,14].map(x=><option key={x} value={x}>{x}</option>)}
           </select>
         </label>
         <label>Frases por post<input value="4" disabled readOnly /></label>
-        <button className="generate" onClick={generate} disabled={loading}>{loading?'Gerando com IA...':'⚡ Gerar conteúdo'}</button>
+        <button className="generate" onClick={generate} disabled={loading}>{loading?'Montando lote...':'⚡ Gerar conteúdo'}</button>
       </section>
 
       {error && <div className="notice error"><b>Erro:</b> {error}</div>}
@@ -101,7 +101,7 @@ export default function App() {
       <section className="panel">
         <div className="row">
           <div>
-            <div className="eyebrow">PRÉVIA {meta?.source === 'openai' ? '• IA ATIVA' : meta?.source === 'demo' ? '• DEMONSTRAÇÃO' : ''}</div>
+            <div className="eyebrow">PRÉVIA {meta?.source === 'local' ? '• LOCAL • R$ 0' : ''}</div>
             <h2>Post {String(activePost + 1).padStart(2, '0')}</h2>
           </div>
           <div className="actions">
