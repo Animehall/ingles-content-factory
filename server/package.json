@@ -1,6 +1,6 @@
 {
   "name": "ingles-content-factory-server",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "type": "module",
   "scripts": {
     "dev": "node --watch src/index.js",
@@ -9,7 +9,6 @@
   "dependencies": {
     "cors": "latest",
     "dotenv": "latest",
-    "express": "latest",
-    "openai": "latest"
+    "express": "latest"
   }
 }
